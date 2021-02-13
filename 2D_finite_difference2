@@ -1,0 +1,71 @@
+#Problem 7.1 b
+
+
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+
+
+##-----------------------HOMEWORK STARTS---------------------------------
+''' First I want to explain that I used matrixs for iteration methods. In every iteration function runs then matrix updates.
+    I choosed my matrix L_x , L_y data as in the picture..
+
+    | 0 0 0 0 .....  0 0 0 0 |
+    | 0 0 0 0 .....  0 0 0 0 |
+    .
+    .
+    | 0 0 0 0 .....  0 0 0 0 |
+    | 0 0 0 0 .....  0 0 0 0 |
+
+'''
+# Generates matrix in the picture below
+L_x=1
+L_y=1
+L_x_dim=100
+L_y_dim=100
+array = np.zeros((L_y_dim, L_x_dim))
+
+
+
+#Grid mech
+def u_i_j(i, j, matrix):
+    h=0.01
+    matrix[i + 1][j + 1] = (1 / 4) * (matrix[i][j + 1] + matrix[i + 2][j + 1] + matrix[i + 1][j] + matrix[i + 1][j + 2]-1*h**2)
+
+
+iteration_number = 100
+for m in range(iteration_number):
+    for i in range(len(array) - 2):
+        for j in range(len(array[0]) - 2):
+            u_i_j(i, j, array)
+
+
+
+#===3D function plot of given functions========
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+x_data=np.linspace(0,L_x,L_x_dim)
+y_data=np.linspace(0,L_y,L_y_dim)
+
+x=[]
+y=[]
+z=[]
+for i in range(len(x_data)-1):
+
+    for j in range(len(y_data)-1):
+
+        x.append(x_data[j])
+        y.append(y_data[i])
+        z.append(array[i][j])
+
+print(len(x),len(y),len(z))
+
+ax.scatter(x,y,z,color='Green')
+
+plt.xlabel('L_x', fontsize=18)
+plt.ylabel('L_y', fontsize=18)
+plt.show()
+
+
